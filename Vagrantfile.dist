@@ -15,18 +15,32 @@ Vagrant.configure(2) do |config|
   config.vm.box = "ubuntu/trusty64"
   
   config.vm.network "forwarded_port", guest: 80, host: 80
-  config.vm.network "forwarded_port", guest: 5432, host: 5432
+  # config.vm.network "forwarded_port", guest: 3306, host: 3306
+  # config.vm.network "forwarded_port", guest: 5432, host: 5432
   
   config.vm.synced_folder "./www", "/var/www", type: "smb", owner: "www-data", group: "www-data"
   config.vm.synced_folder "./vhosts", "/etc/apache2/sites-available"
   
   config.vm.provider "virtualbox" do |vb|
     vb.memory = "1024"
-	vb.cpus = 2
   end
   
-  config.vm.provision "shell", path: "setup.sh"
-  config.vm.provision "shell", path: "bootstrap.sh", run: "always"
+  config.vm.provision "shell", inline: "apt-get update"
+  
+  config.vm.provision "shell", path: "packages/apache2.sh"
+  config.vm.provision "shell", path: "packages/php5.sh"
+  # config.vm.provision "shell", path: "packages/mysql.sh"
+  # config.vm.provision "shell", path: "packages/postgresql.sh"
+  # config.vm.provision "shell", path: "packages/memcached.sh"
+  config.vm.provision "shell", path: "packages/composer.sh"
+  # config.vm.provision "shell", path: "packages/symfony.sh"
+  # config.vm.provision "shell", path: "packages/git.sh"
+  # config.vm.provision "shell", path: "packages/nodejs.sh"
+  # config.vm.provision "shell", path: "packages/bower.sh"
+  # config.vm.provision "shell", path: "packages/grunt.sh"
+  
+  config.vm.provision "shell", inline: "service apache2 restart", run: "always"
+  # config.vm.provision "shell", inline: "service postgresql restart", run: "always"
   
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
