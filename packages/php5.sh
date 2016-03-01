@@ -8,3 +8,4 @@ apt-get install -y php5-pgsql
 apt-get install -y php5-sqlite
 apt-get install -y php5-memcached
 apt-get install -y php-apc
+apt-get install -y php5-phalcon

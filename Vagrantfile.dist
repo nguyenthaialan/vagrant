@@ -18,7 +18,7 @@ Vagrant.configure(2) do |config|
   # config.vm.network "forwarded_port", guest: 3306, host: 3306
   # config.vm.network "forwarded_port", guest: 5432, host: 5432
   
-  config.vm.synced_folder "./www", "/var/www", type: "smb", smb_username: "", smb_password: "", owner: "www-data", group: "www-data"
+  config.vm.synced_folder "./www", "/var/www", type: "smb", smb_username: "", smb_password: "", owner: "www-data", group: "www-data", mount_options: ["file_mode=0775", "dir_mode=0775"]
   config.vm.synced_folder "./vhosts", "/etc/apache2/sites-available"
   
   config.vm.provider "virtualbox" do |vb|
@@ -28,6 +28,7 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell", inline: "apt-get update"
   
   config.vm.provision "shell", path: "packages/apache2.sh"
+  # config.vm.provision "shell", path: "packages/phalcon.sh"
   config.vm.provision "shell", path: "packages/php5.sh"
   # config.vm.provision "shell", path: "packages/mysql.sh"
   # config.vm.provision "shell", path: "packages/postgresql.sh"
